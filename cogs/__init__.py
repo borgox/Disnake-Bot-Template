@@ -1,0 +1,3 @@
+"""
+Cogs for the bot.
+"""
