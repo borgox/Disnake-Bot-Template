@@ -1,7 +1,7 @@
 import os
 import json
 import logging
-from typing import Any, Dict, Tuple
+from typing import Any, Dict, Tuple, Optional
 from disnake.ext import commands
 from jsonschema import validate, ValidationError
 
@@ -51,8 +51,10 @@ class CogManager:
         """
         for file in os.listdir(self.path):
             if file.endswith(".py"):
+                if file == "__init__.py":
+                    continue
                 try:
-                    self.bot.load_extension(f"{self.path.replace('/', '.')[:-1]}.{file[:-3]}")
+                    self.bot.load_extension(f"cogs.{file[:-3]}")
                     self.cogs.append(file)
                 except Exception as e:
                     self.errors[f"cogs.{file[:-3]}"] = e

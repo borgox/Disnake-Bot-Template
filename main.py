@@ -1,7 +1,7 @@
 from disnake import ApplicationCommandInteraction
 from disnake.ext.commands import errors
 from utils.logger import get_logger
-from utils.utils import CogManager
+from utils.utils import CogManager, ConfigManager
 from disnake.ext import commands
 import disnake
 
@@ -49,6 +49,8 @@ class Bot(commands.InteractionBot):
         """
         super().__init__(*args, **kwargs)
         self.cog_manager = CogManager(self)
+        self.config_manager = ConfigManager(self)
+
 
     async def on_ready(self) -> None:
         """Called when the bot connects to Discord's API."""
@@ -334,3 +336,9 @@ class Bot(commands.InteractionBot):
 
 # Instantiate the bot with all intents enabled
 bot = Bot(intents=disnake.Intents.all())
+bot_token = bot.config_manager.get_token()
+
+if bot_token:
+    bot.run(bot_token)
+else:
+    logger.error("Bot token is missing.")
